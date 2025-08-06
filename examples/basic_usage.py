@@ -103,7 +103,6 @@ def demo_direct_api():
 
 if __name__ == "__main__":
     print("Cryptic - Biblioteca de análisis de datos sensibles")
-    print("Desarrollado por Los Leones Team")
     print()
     
     # Ejecutar demos

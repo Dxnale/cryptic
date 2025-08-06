@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 from cryptic.core.hash_identifier import HashIdentifier, HashAnalysis
+from cryptic.core.sensitive_detector import SensitiveDataDetector, SensitiveAnalysis
 
 
 class DataSensitivity(Enum):
@@ -39,15 +40,19 @@ class DataAnalysis:
         sensitivity_level: Nivel de sensibilidad detectado
         protection_status: Estado de protección
         hash_analysis: Análisis de hash si aplica
+        sensitive_analysis: Análisis de datos sensibles si aplica
         recommendations: Recomendaciones de seguridad
         confidence: Nivel de confianza en el análisis
+        analysis_time_ms: Tiempo de procesamiento en milisegundos
     """
     original_data: str
     sensitivity_level: DataSensitivity
     protection_status: ProtectionStatus
     hash_analysis: HashAnalysis | None
+    sensitive_analysis: SensitiveAnalysis | None
     recommendations: List[str]
     confidence: float
+    analysis_time_ms: float
 
 
 class CrypticAnalyzer:
@@ -61,6 +66,7 @@ class CrypticAnalyzer:
     def __init__(self):
         """Inicializa el analizador con sus componentes"""
         self.hash_identifier = HashIdentifier()
+        self.sensitive_detector = SensitiveDataDetector()
     
     def analyze_data(self, data: str) -> DataAnalysis:
         """
@@ -72,36 +78,38 @@ class CrypticAnalyzer:
         Returns:
             DataAnalysis con el resultado completo del análisis
         """
-        # Por ahora, solo analizamos hashes (implementación actual)
-        # TODO: Agregar detección de datos sensibles en futuras iteraciones
+        import time
+        start_time = time.time()
         
+        # Realizar análisis de hash y datos sensibles en paralelo
         hash_analysis = self.hash_identifier.identify(data)
+        sensitive_analysis = self.sensitive_detector.detect(data)
         
-        # Determinar estado de protección basado en identificación de hash
-        if hash_analysis.possible_types:
-            protection_status = ProtectionStatus.PROTECTED
-            sensitivity_level = DataSensitivity.MEDIUM  # Asumimos que los hashes son datos sensibles
-            recommendations = [
-                f"Datos identificados como hash {hash_analysis.possible_types[0][0].value}",
-                "Los datos parecen estar hasheados correctamente"
-            ]
-            confidence = hash_analysis.possible_types[0][1]
-        else:
-            protection_status = ProtectionStatus.UNKNOWN
-            sensitivity_level = DataSensitivity.NONE
-            recommendations = [
-                "No se pudo identificar el formato de los datos",
-                "Considere verificar si contiene información sensible"
-            ]
-            confidence = 0.0
-            
+        # Determinar nivel de sensibilidad combinando ambos análisis
+        sensitivity_level = self._determine_sensitivity_level(hash_analysis, sensitive_analysis)
+        
+        # Determinar estado de protección
+        protection_status = self._determine_protection_status(hash_analysis, sensitive_analysis)
+        
+        # Generar recomendaciones combinadas
+        recommendations = self._generate_combined_recommendations(
+            hash_analysis, sensitive_analysis, protection_status
+        )
+        
+        # Calcular confianza general
+        confidence = self._calculate_overall_confidence(hash_analysis, sensitive_analysis)
+        
+        analysis_time = (time.time() - start_time) * 1000  # Convertir a ms
+        
         return DataAnalysis(
             original_data=data,
             sensitivity_level=sensitivity_level,
             protection_status=protection_status,
             hash_analysis=hash_analysis,
+            sensitive_analysis=sensitive_analysis,
             recommendations=recommendations,
-            confidence=confidence
+            confidence=confidence,
+            analysis_time_ms=analysis_time
         )
     
     def analyze_batch(self, data_list: List[str]) -> List[DataAnalysis]:
@@ -167,6 +175,7 @@ class CrypticAnalyzer:
         print(f"Sensitivity Level: {analysis.sensitivity_level.value}")
         print(f"Protection Status: {analysis.protection_status.value}")
         print(f"Confidence: {analysis.confidence:.1%}")
+        print(f"Analysis Time: {analysis.analysis_time_ms:.1f}ms")
         
         if analysis.hash_analysis and detailed:
             print("\nHash Analysis:")
@@ -178,9 +187,163 @@ class CrypticAnalyzer:
                 for hash_type, confidence in analysis.hash_analysis.possible_types[:3]:
                     print(f"    {hash_type.value}: {confidence:.1%}")
         
+        if analysis.sensitive_analysis and analysis.sensitive_analysis.matches and detailed:
+            print("\nSensitive Data Analysis:")
+            print(f"  Total Matches: {analysis.sensitive_analysis.total_matches}")
+            print(f"  Highest Sensitivity: {analysis.sensitive_analysis.highest_sensitivity}")
+            print(f"  Detection Time: {analysis.sensitive_analysis.analysis_time_ms:.1f}ms")
+            
+            print("  Matches Found:")
+            for match in analysis.sensitive_analysis.matches[:5]:  # Mostrar máximo 5
+                validation_status = "✓ Validated" if match.is_validated else "⚠ Not validated"
+                print(f"    {match.data_type.value}: {match.matched_text} ({match.confidence:.1%}) [{validation_status}]")
+        
         if analysis.recommendations:
             print("\nRecommendations:")
             for i, rec in enumerate(analysis.recommendations, 1):
                 print(f"  {i}. {rec}")
         
         print()
+    
+    def _determine_sensitivity_level(self, hash_analysis: HashAnalysis, 
+                                   sensitive_analysis: SensitiveAnalysis) -> DataSensitivity:
+        """
+        Determina el nivel de sensibilidad combinando análisis de hash y datos sensibles.
+        
+        Args:
+            hash_analysis: Resultado del análisis de hash
+            sensitive_analysis: Resultado del análisis de datos sensibles
+            
+        Returns:
+            Nivel de sensibilidad determinado
+        """
+        # Mapeo de niveles de sensibilidad del detector a enum
+        sensitivity_mapping = {
+            'CRITICAL': DataSensitivity.CRITICAL,
+            'HIGH': DataSensitivity.HIGH,
+            'MEDIUM': DataSensitivity.MEDIUM,
+            'LOW': DataSensitivity.LOW,
+            'NONE': DataSensitivity.NONE
+        }
+        
+        # Si hay datos sensibles detectados, usar el mayor nivel
+        if sensitive_analysis.matches:
+            detected_level = sensitive_analysis.highest_sensitivity
+            return sensitivity_mapping.get(detected_level, DataSensitivity.NONE)
+        
+        # Si es un hash, asumir sensibilidad media (datos que fueron protegidos)
+        if hash_analysis.possible_types:
+            return DataSensitivity.MEDIUM
+        
+        # Sin detecciones específicas
+        return DataSensitivity.NONE
+    
+    def _determine_protection_status(self, hash_analysis: HashAnalysis,
+                                   sensitive_analysis: SensitiveAnalysis) -> ProtectionStatus:
+        """
+        Determina el estado de protección de los datos.
+        
+        Args:
+            hash_analysis: Resultado del análisis de hash
+            sensitive_analysis: Resultado del análisis de datos sensibles
+            
+        Returns:
+            Estado de protección determinado
+        """
+        has_hash = hash_analysis.possible_types
+        has_sensitive = sensitive_analysis.matches
+        
+        if has_hash and not has_sensitive:
+            # Es un hash sin datos sensibles detectados = PROTEGIDO
+            return ProtectionStatus.PROTECTED
+        
+        if has_sensitive and not has_hash:
+            # Datos sensibles sin hash = SIN PROTECCIÓN
+            return ProtectionStatus.UNPROTECTED
+        
+        if has_hash and has_sensitive:
+            # Ambos presentes = PARCIALMENTE PROTEGIDO (datos mixtos)
+            return ProtectionStatus.PARTIALLY_PROTECTED
+        
+        # No hay detecciones claras
+        return ProtectionStatus.UNKNOWN
+    
+    def _generate_combined_recommendations(self, hash_analysis: HashAnalysis,
+                                         sensitive_analysis: SensitiveAnalysis,
+                                         protection_status: ProtectionStatus) -> List[str]:
+        """
+        Genera recomendaciones combinando ambos tipos de análisis.
+        
+        Args:
+            hash_analysis: Resultado del análisis de hash
+            sensitive_analysis: Resultado del análisis de datos sensibles
+            protection_status: Estado de protección determinado
+            
+        Returns:
+            Lista de recomendaciones específicas
+        """
+        recommendations = []
+        
+        # Recomendaciones basadas en estado de protección
+        if protection_status == ProtectionStatus.PROTECTED:
+            if hash_analysis.possible_types:
+                hash_type = hash_analysis.possible_types[0][0].value
+                recommendations.append(f"✅ Datos identificados como hash {hash_type}")
+                recommendations.append("Los datos parecen estar correctamente protegidos")
+        
+        elif protection_status == ProtectionStatus.UNPROTECTED:
+            recommendations.append("⚠️  ATENCIÓN: Se detectaron datos sensibles sin protección")
+            recommendations.append("Es crítico implementar medidas de protección inmediatamente")
+        
+        elif protection_status == ProtectionStatus.PARTIALLY_PROTECTED:
+            recommendations.append("⚠️  DATOS MIXTOS: Se detectaron tanto hashes como datos sensibles")
+            recommendations.append("Revise que todos los datos sensibles estén apropiadamente protegidos")
+        
+        # Agregar recomendaciones específicas de datos sensibles
+        if sensitive_analysis.recommendations:
+            recommendations.append("--- Recomendaciones específicas por tipo de dato ---")
+            recommendations.extend(sensitive_analysis.recommendations)
+        
+        # Recomendaciones de rendimiento si aplica
+        if sensitive_analysis.analysis_time_ms > 50:  # Umbral de 50ms
+            recommendations.append(f"⏱️  Tiempo de análisis: {sensitive_analysis.analysis_time_ms:.1f}ms")
+            if sensitive_analysis.analysis_time_ms > 100:
+                recommendations.append("Considere optimizar el texto o usar análisis en lotes para mejor rendimiento")
+        
+        # Si no hay recomendaciones específicas, dar una general
+        if not recommendations:
+            recommendations.append("No se detectaron patrones específicos conocidos")
+            recommendations.append("Considere verificar manualmente si los datos requieren protección")
+        
+        return recommendations
+    
+    def _calculate_overall_confidence(self, hash_analysis: HashAnalysis,
+                                    sensitive_analysis: SensitiveAnalysis) -> float:
+        """
+        Calcula la confianza general del análisis.
+        
+        Args:
+            hash_analysis: Resultado del análisis de hash
+            sensitive_analysis: Resultado del análisis de datos sensibles
+            
+        Returns:
+            Nivel de confianza entre 0.0 y 1.0
+        """
+        confidences = []
+        
+        # Confianza del análisis de hash
+        if hash_analysis.possible_types:
+            hash_confidence = hash_analysis.possible_types[0][1]
+            confidences.append(hash_confidence)
+        
+        # Confianza promedio de detecciones sensibles
+        if sensitive_analysis.matches:
+            sensitive_confidences = [match.confidence for match in sensitive_analysis.matches]
+            avg_sensitive_confidence = sum(sensitive_confidences) / len(sensitive_confidences)
+            confidences.append(avg_sensitive_confidence)
+        
+        if confidences:
+            return sum(confidences) / len(confidences)
+        
+        # Sin detecciones, confianza baja
+        return 0.1

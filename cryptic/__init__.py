@@ -23,17 +23,28 @@ Para más información, consulta la documentación completa.
 
 # Importar API pública
 from cryptic.core.hash_identifier import HashIdentifier, HashType, HashAnalysis
-from cryptic.core.analyzer import CrypticAnalyzer
+from cryptic.core.analyzer import CrypticAnalyzer, DataSensitivity, ProtectionStatus, DataAnalysis
+from cryptic.core.sensitive_detector import SensitiveDataDetector, SensitiveDataType, SensitiveAnalysis
 
 # Metadatos del paquete
 __version__ = "0.1.0"
-__author__ = "Los Leones Team"
 __description__ = "Biblioteca para detección y verificación de encriptación de datos sensibles"
 
-# API pública - Solo clases principales
+# API pública - Clases principales y nuevas funcionalidades
 __all__ = [
+    # Hash identification
     "HashIdentifier",
     "HashType", 
     "HashAnalysis",
+    
+    # Main analyzer
     "CrypticAnalyzer",
+    "DataSensitivity",
+    "ProtectionStatus", 
+    "DataAnalysis",
+    
+    # Sensitive data detection
+    "SensitiveDataDetector",
+    "SensitiveDataType",
+    "SensitiveAnalysis",
 ]
