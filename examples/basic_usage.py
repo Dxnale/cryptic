@@ -6,7 +6,7 @@ Este script demuestra las funcionalidades principales de Cryptic
 para identificación de hashes y análisis de datos sensibles.
 """
 
-from cryptic import HashIdentifier, CrypticAnalyzer, quick_identify, batch_identify
+from cryptic import HashIdentifier, CrypticAnalyzer
 
 
 def demo_hash_identification():
@@ -30,13 +30,16 @@ def demo_hash_identification():
     
     print("Identificación individual:")
     for hash_str in test_hashes[:3]:
-        print(f"  {hash_str} -> {quick_identify(hash_str)}")
+        hash_type, confidence = identifier.identify_best_match(hash_str)
+        print(f"  {hash_str} -> {hash_type.value} ({confidence:.1%})")
     
     print("\nAnálisis detallado:")
     identifier.print_analysis(test_hashes[0], detailed=True)
     
     print("Identificación en lote:")
-    batch_results = batch_identify(test_hashes)
+    batch_results = {}
+    for hash_str in test_hashes:
+        batch_results[hash_str] = identifier.identify_best_match(hash_str)
     for hash_str, (hash_type, confidence) in batch_results.items():
         print(f"  {hash_str[:32]}... -> {hash_type.value} ({confidence:.1%})")
 
@@ -72,23 +75,30 @@ def demo_cryptic_analyzer():
     print(f"  Tipos de hash detectados: {list(report['hash_types_detected'].keys())}")
 
 
-def demo_compatibility():
-    """Demuestra compatibilidad con la API anterior"""
+def demo_direct_api():
+    """Demuestra uso directo de la API limpia"""
     print("=" * 60)
-    print("DEMO: Compatibilidad con API anterior")
+    print("DEMO: API Directa y Limpia")
     print("=" * 60)
     
-    # Las funciones de conveniencia mantienen compatibilidad
+    # Usar HashIdentifier directamente
+    identifier = HashIdentifier()
     test_hash = "5d41402abc4b2a76b9719d911017c592"
     
-    # Identificación rápida
-    result = quick_identify(test_hash)
-    print(f"quick_identify: {result}")
+    # Identificación directa
+    hash_type, confidence = identifier.identify_best_match(test_hash)
+    print(f"identify_best_match: {hash_type.value} ({confidence:.1%})")
     
-    # Identificación en lote
+    # Análisis completo
+    analysis = identifier.identify(test_hash)
+    print(f"Full analysis: {len(analysis.possible_types)} tipos detectados")
+    
+    # Procesamiento en lote
     batch = [test_hash, "aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d"]
-    results = batch_identify(batch)
-    print(f"batch_identify: {len(results)} resultados procesados")
+    results = {}
+    for hash_str in batch:
+        results[hash_str] = identifier.identify_best_match(hash_str)
+    print(f"Batch processing: {len(results)} hashes procesados")
 
 
 if __name__ == "__main__":
@@ -101,7 +111,7 @@ if __name__ == "__main__":
     print()
     demo_cryptic_analyzer()
     print()
-    demo_compatibility()
+    demo_direct_api()
     
     print("\n" + "=" * 60)
     print("Demo completado. Consulta la documentación para más funcionalidades.")

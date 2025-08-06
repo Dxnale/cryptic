@@ -83,8 +83,8 @@ Este documento describe la suite comprehensiva de tests creada para el script `h
 ### 4. Tests de Rendimiento y Utilidades
 
 #### **Funciones Utilitarias**
-- `test_quick_identify`: Función de identificación rápida
-- `test_batch_identify`: Procesamiento en lote
+- `test_identify_best_match`: Función de identificación directa
+- `test_batch_processing`: Procesamiento en lote usando API directa
 - `test_performance_basic`: Test de rendimiento con 50 hashes
 
 #### **Análisis Detallado**

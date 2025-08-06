@@ -1,4 +1,4 @@
-from cryptic import HashIdentifier, HashType, quick_identify, batch_identify
+from cryptic import HashIdentifier, HashType
 
 
 class TestHashIdentifier:
@@ -240,24 +240,28 @@ class TestHashIdentifier:
         assert analysis_mysql5.format_analysis["has_prefix"] is True
     
     # Tests para funciones utilitarias
-    def test_quick_identify(self):
-        """Test función quick_identify"""
-        result = quick_identify("5d41402abc4b2a76b9719d911017c592")
-        assert "MD5" in result
-        assert "%" in result  # Debería incluir porcentaje de confianza
+    def test_identify_best_match(self):
+        """Test función identify_best_match"""
+        hash_type, confidence = self.identifier.identify_best_match("5d41402abc4b2a76b9719d911017c592")
+        assert hash_type == HashType.MD5
+        assert confidence > 0.7
         
-        result_mysql5 = quick_identify("*A4B6157319038724E3560894F7F932C8886EBFCF")
-        assert "MySQL5" in result_mysql5
+        hash_type_mysql5, confidence_mysql5 = self.identifier.identify_best_match("*A4B6157319038724E3560894F7F932C8886EBFCF")
+        assert hash_type_mysql5 == HashType.MYSQL5
+        assert confidence_mysql5 > 0.9
     
-    def test_batch_identify(self):
-        """Test identificación en lote"""
+    def test_batch_processing(self):
+        """Test procesamiento en lote usando API directa"""
         hash_batch = [
             "5d41402abc4b2a76b9719d911017c592",  # MD5
             "aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d",  # SHA-1
             "*A4B6157319038724E3560894F7F932C8886EBFCF",  # MySQL5
         ]
         
-        results = batch_identify(hash_batch)
+        # Procesar cada hash individualmente
+        results = {}
+        for hash_str in hash_batch:
+            results[hash_str] = self.identifier.identify_best_match(hash_str)
         
         assert len(results) == 3
         assert all(hash_str in results for hash_str in hash_batch)
@@ -362,7 +366,9 @@ class TestHashIdentifier:
         # El procesamiento debería ser rápido
         import time
         start_time = time.time()
-        results = batch_identify(test_batch)
+        results = {}
+        for hash_str in test_batch:
+            results[hash_str] = self.identifier.identify_best_match(hash_str)
         end_time = time.time()
         
         # Debería procesar 50 hashes en menos de 1 segundo
