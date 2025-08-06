@@ -90,6 +90,7 @@ Los algoritmos Hash, o funciones de resumen, nacen en parte para poder soluciona
 Entre los algoritmos de hashing mas comunes y en los que nos centraremos en esta investigación, se encuentran los siguientes:
 - MD5
 - SHA-1
+- Bcrypt
 
 ## 2.2 Herramientas
 
@@ -152,9 +153,13 @@ Entre los recursos que se han utilizado para el desarrollo de este proyecto, est
 
 ## 4.3 Demostración
 
-## 4.4 Desarrollo Seguro
+## 4.4 Proceso de desarrollo
 
 ### 4.4.1 Prácticas de desarrollo seguro
+
+### 4.4.2 Herramientas de desarrollo
+
+### 4.4.3 Metodología de desarrollo
 
 ## 4.5 Trazabilidad
 
