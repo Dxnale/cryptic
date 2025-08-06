@@ -1,8 +1,23 @@
 [project]
-name = "saludador"
+name = "cryptic"
 version = "0.1.0"
-description = "Add your description here"
+description = "Biblioteca de Python para detección, verificación y sugerencia de encriptación de datos sensibles"
 readme = "README.md"
+authors = [
+    {name = "Los Leones Team", email = "team@losleones.dev"}
+]
+license = {text = "MIT"}
+keywords = ["cryptography", "security", "hash", "encryption", "data-protection"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Topic :: Security :: Cryptography",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+]
 requires-python = ">=3.12"
 dependencies = [
     "pytest>=8.4.1",
@@ -13,8 +28,12 @@ dependencies = [
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[project.scripts]
-saludador = "saludador.core:cli"
+# [project.scripts]
+# cryptic = "cryptic.cli.main:main"  # CLI será implementado en Fase 2
 
 [tool.pytest.ini_options]
-addopts = "--cov=saludador --cov-report=term-missing"
+addopts = "--cov=cryptic --cov-report=term-missing"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
