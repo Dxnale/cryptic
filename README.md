@@ -81,9 +81,15 @@ La clave pública se utiliza para cifrar los mensajes, mientras que la clave pri
 
 ### 2.1.2 Hashing
 La integridad de la informacion en la propiedad que busca "mantener los datos libres de modificaciones no autorizadas".
-Asegurar la integridad de la informacion es tan importante como la confidencialidad de la misma, de hecho en ocasiones puede llegar a ser mas importante. Por ejemplo consideremos el caso de una transferencia bancaria donde el campo "importe" podría ser modificado para contener un monto diferente al que se desea transferir.
+Asegurar la integridad de la informacion es tan importante como la confidencialidad de la misma, de hecho en ocasiones puede llegar a ser mas importante. Por ejemplo consideremos el caso de una transferencia bancaria donde el campo "importe" podría ser modificado para contener un monto diferente al que se desea transferir. En este caso la perdida de integridad puede tener un coste muy elevado.
 
+Los sistemas criptográficos, por defecto, no pueden garantizar la integridad del mensaje, ya que no tienen en cuenta la identidad del autor original del mensaje y cualquier entidad poseedora de la clave es capaz de generar un mensaje cifrado. Si un intermediario no autorizado fuese capaz de captar las claves, podria capturar los mensajes cifrados, descifrarios, analizar y modificar su contenido, cifrarlos de nuevo y mandarlos al destinatario. En ese caso, el destinatario no tendría ningún medio a su disposición para verificar que el mensaje que ha recibido es el que la entidad origen pretendia mandarle o no.
 
+Los algoritmos Hash, o funciones de resumen, nacen en parte para poder solucionar estos problemas. Estas funciones son, en esencia, fórmulas matemáticas, que, tomando un valor de entrada, por ejemplo, el valor numérico del mensaje, que puede ser de tamaño variable, ofrece como salida cierto valor de una longitud determinada. Estas funciones son ideadas de forma que sea imposible deducir el valor de entrada de la función, utilizando el resultado. 
+
+Entre los algoritmos de hashing mas comunes y en los que nos centraremos en esta investigación, se encuentran los siguientes:
+- MD5
+- SHA-1
 
 ## 2.2 Herramientas
 
