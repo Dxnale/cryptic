@@ -5,7 +5,7 @@ Este módulo proporciona funcionalidades para detectar diferentes tipos de
 información sensible utilizando patrones regex y validaciones específicas.
 """
 
-from typing import List, Tuple, Dict, Any, Optional
+from typing import List, Dict, Any
 from dataclasses import dataclass
 import re
 import time

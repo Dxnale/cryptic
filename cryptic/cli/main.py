@@ -14,7 +14,6 @@ import json
 import yaml
 from pathlib import Path
 from typing import List, Dict, Any, Optional
-from dataclasses import asdict
 
 import click
 
@@ -176,7 +175,7 @@ def analyze(data: str, detailed: bool, format: str):
             click.echo(format_analysis_for_terminal(analysis, detailed))
             
             if analysis.recommendations:
-                print_colored(f"\n💡 Recomendaciones:", Colors.YELLOW, bold=True)
+                print_colored("\n💡 Recomendaciones:", Colors.YELLOW, bold=True)
                 for i, rec in enumerate(analysis.recommendations, 1):
                     click.echo(f"   {i}. {rec}")
                     
@@ -258,7 +257,7 @@ def verify(file_path: Path, column: Optional[str], detailed: bool,
         report = analyzer.generate_report(results)
         
         # Mostrar resumen
-        print_colored(f"\n📊 Resumen del análisis:", Colors.GREEN, bold=True)
+        print_colored("\n📊 Resumen del análisis:", Colors.GREEN, bold=True)
         click.echo(f"   Total de elementos analizados: {report['total_analyzed']}")
         click.echo(f"   Elementos protegidos: {report['protected']} ({report['protection_rate']:.1%})")
         click.echo(f"   Elementos sin protección: {report['unprotected']}")
@@ -270,7 +269,7 @@ def verify(file_path: Path, column: Optional[str], detailed: bool,
         
         # Mostrar resultados detallados si se solicita
         if detailed and results:
-            print_colored(f"\n📋 Análisis detallado:", Colors.YELLOW, bold=True)
+            print_colored("\n📋 Análisis detallado:", Colors.YELLOW, bold=True)
             for result in results[:10]:  # Mostrar máximo 10
                 click.echo("\n" + format_analysis_for_terminal(result, True))
             
@@ -311,7 +310,7 @@ def batch(file_path: Path, output: Path, format: str, column: Optional[str]):
     
     try:
         analyzer = CrypticAnalyzer()
-        detector = SensitiveDataDetector()
+        SensitiveDataDetector()
         results = []
         
         total_rows = 0
@@ -363,7 +362,7 @@ def batch(file_path: Path, output: Path, format: str, column: Optional[str]):
         analyses = [r['analysis'] for r in results]
         report = analyzer.generate_report(analyses)
         
-        print_colored(f"\n📊 Procesamiento completado:", Colors.GREEN, bold=True)
+        print_colored("\n📊 Procesamiento completado:", Colors.GREEN, bold=True)
         click.echo(f"   Total procesado: {len(results)} elementos")
         click.echo(f"   Tasa de protección: {report['protection_rate']:.1%}")
         
@@ -376,7 +375,7 @@ def batch(file_path: Path, output: Path, format: str, column: Optional[str]):
                     sensitive_by_type[data_type] = sensitive_by_type.get(data_type, 0) + 1
         
         if sensitive_by_type:
-            print_colored(f"   ⚠️  Datos sensibles por tipo:", Colors.YELLOW, bold=True)
+            print_colored("   ⚠️  Datos sensibles por tipo:", Colors.YELLOW, bold=True)
             for data_type, count in sensitive_by_type.items():
                 click.echo(f"      {data_type}: {count}")
         
@@ -524,7 +523,7 @@ def main():
     try:
         cli()
     except KeyboardInterrupt:
-        print_colored(f"\n\n⚠️  Operación cancelada por el usuario", Colors.YELLOW)
+        print_colored("\n\n⚠️  Operación cancelada por el usuario", Colors.YELLOW)
         sys.exit(0)
     except Exception as e:
         print_colored(f"\n❌ Error inesperado: {str(e)}", Colors.RED, bold=True)

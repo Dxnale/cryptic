@@ -5,7 +5,6 @@ Este módulo contiene tests para validar que todos los comandos CLI
 funcionen correctamente con diferentes tipos de entrada y formatos de salida.
 """
 
-import pytest
 import tempfile
 import json
 import yaml

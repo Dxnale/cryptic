@@ -5,7 +5,6 @@ Este módulo valida que el CrypticAnalyzer integre correctamente
 la detección de hashes y datos sensibles.
 """
 
-import pytest
 from cryptic.core.analyzer import CrypticAnalyzer, DataSensitivity, ProtectionStatus
 from cryptic.patterns.sensitive_patterns import SensitiveDataType
 
@@ -244,7 +243,6 @@ class TestCrypticAnalyzerIntegration:
         """Test impresión detallada con datos sensibles"""
         import io
         import sys
-        from contextual import suppress
         
         # Datos que tengan tanto hash como sensibles
         mixed_data = "User juan@empresa.cl with hash 5d41402abc4b2a76b9719d911017c592"

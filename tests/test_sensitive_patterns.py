@@ -5,7 +5,6 @@ Este módulo contiene tests exhaustivos para validar la detección
 de diferentes tipos de información sensible.
 """
 
-import pytest
 from cryptic.patterns.sensitive_patterns import (
     get_sensitive_patterns,
     validate_rut_chileno,
@@ -60,11 +59,11 @@ class TestSensitivePatterns:
     
     def test_email_validation_function(self):
         """Test función de validación avanzada de emails"""
-        assert validate_email_advanced("usuario@ejemplo.com") == True
-        assert validate_email_advanced("invalid.email") == False
-        assert validate_email_advanced("user@") == False
-        assert validate_email_advanced("@domain.com") == False
-        assert validate_email_advanced("user..name@domain.com") == False  # Puntos consecutivos
+        assert validate_email_advanced("usuario@ejemplo.com")
+        assert not validate_email_advanced("invalid.email")
+        assert not validate_email_advanced("user@")
+        assert not validate_email_advanced("@domain.com")
+        assert not validate_email_advanced("user..name@domain.com")  # Puntos consecutivos
     
     # TESTS PARA RUT CHILENO
     def test_rut_chileno_detection_valid(self):
@@ -87,16 +86,16 @@ class TestSensitivePatterns:
     def test_rut_validation_algorithm(self):
         """Test algoritmo de validación de RUT"""
         # RUTs válidos conocidos (verificados manualmente)
-        assert validate_rut_chileno("11.111.111-1") == True
-        assert validate_rut_chileno("12.345.678-5") == True  
-        assert validate_rut_chileno("1234567-4") == True      # Corregido: DV debe ser 4
-        assert validate_rut_chileno("12345678-5") == True
+        assert validate_rut_chileno("11.111.111-1")
+        assert validate_rut_chileno("12.345.678-5")  
+        assert validate_rut_chileno("1234567-4")      # Corregido: DV debe ser 4
+        assert validate_rut_chileno("12345678-5")
         
         # RUTs inválidos  
-        assert validate_rut_chileno("1234567-5") == False     # DV incorrecto (debería ser 4)
-        assert validate_rut_chileno("11.111.111-2") == False  # Dígito verificador incorrecto
-        assert validate_rut_chileno("invalid") == False       # Formato completamente inválido
-        assert validate_rut_chileno("123") == False           # Muy corto
+        assert not validate_rut_chileno("1234567-5")     # DV incorrecto (debería ser 4)
+        assert not validate_rut_chileno("11.111.111-2")  # Dígito verificador incorrecto
+        assert not validate_rut_chileno("invalid")       # Formato completamente inválido
+        assert not validate_rut_chileno("123")           # Muy corto
     
     def test_rut_false_positives(self):
         """Test exclusión de RUTs de prueba"""
@@ -131,14 +130,14 @@ class TestSensitivePatterns:
     def test_credit_card_luhn_validation(self):
         """Test algoritmo de Luhn para tarjetas"""
         # Números válidos según Luhn
-        assert validate_credit_card("4111111111111111") == True  # Visa test
-        assert validate_credit_card("5555555555554444") == True  # MasterCard test
-        assert validate_credit_card("4111-1111-1111-1111") == True  # Con guiones
+        assert validate_credit_card("4111111111111111")  # Visa test
+        assert validate_credit_card("5555555555554444")  # MasterCard test
+        assert validate_credit_card("4111-1111-1111-1111")  # Con guiones
         
         # Números inválidos
-        assert validate_credit_card("4111111111111112") == False  # Dígito incorrecto
-        assert validate_credit_card("1234567890123456") == False  # No pasa Luhn
-        assert validate_credit_card("invalid") == False
+        assert not validate_credit_card("4111111111111112")  # Dígito incorrecto
+        assert not validate_credit_card("1234567890123456")  # No pasa Luhn
+        assert not validate_credit_card("invalid")
     
     def test_credit_card_false_positives(self):
         """Test exclusión de números de prueba obvios"""

@@ -8,7 +8,7 @@ RUT chilenos, números de tarjetas de crédito, teléfonos, etc.
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict
 import re
 
 
@@ -83,7 +83,7 @@ def validate_rut_chileno(rut: str) -> bool:
     dv = rut_clean[-1]
     
     try:
-        numero_int = int(numero)
+        int(numero)
     except ValueError:
         return False
     
