@@ -1,0 +1,134 @@
+results:
+- column: email
+  confidence: 0.95
+  original_data: juan.perez@empresa.cl
+  protection_status: Sin protección
+  row: 1
+  sensitivity_level: Sensibilidad alta
+- column: password_hash
+  confidence: 0.8
+  original_data: 5d41402abc4b2a76b9719d911017c592
+  protection_status: Protegido
+  row: 1
+  sensitivity_level: Sensibilidad media
+- column: rut
+  confidence: 0.98
+  original_data: 12.345.678-5
+  protection_status: Sin protección
+  row: 1
+  sensitivity_level: Sensibilidad crítica
+- column: telefono
+  confidence: 0.85
+  original_data: '+56912345678'
+  protection_status: Sin protección
+  row: 1
+  sensitivity_level: Sensibilidad media
+- column: ip
+  confidence: 0.92
+  original_data: 192.168.1.100
+  protection_status: Sin protección
+  row: 1
+  sensitivity_level: Sensibilidad media
+- column: email
+  confidence: 0.95
+  original_data: maria.gonzalez@company.com
+  protection_status: Sin protección
+  row: 2
+  sensitivity_level: Sensibilidad alta
+- column: password_hash
+  confidence: 0.95
+  original_data: $2b$12$N9qo8uLOickgx2ZMRZoMye
+  protection_status: Protegido
+  row: 2
+  sensitivity_level: Sensibilidad media
+- column: rut
+  confidence: 0.98
+  original_data: 11.111.111-1
+  protection_status: Sin protección
+  row: 2
+  sensitivity_level: Sensibilidad crítica
+- column: telefono
+  confidence: 0.85
+  original_data: '+56987654321'
+  protection_status: Sin protección
+  row: 2
+  sensitivity_level: Sensibilidad media
+- column: ip
+  confidence: 0.92
+  original_data: 10.0.0.1
+  protection_status: Sin protección
+  row: 2
+  sensitivity_level: Sensibilidad media
+- column: email
+  confidence: 0.1
+  original_data: admin@test.com
+  protection_status: Estado desconocido
+  row: 3
+  sensitivity_level: No sensible
+- column: password_hash
+  confidence: 0.1
+  original_data: plaintext_password
+  protection_status: Estado desconocido
+  row: 3
+  sensitivity_level: No sensible
+- column: rut
+  confidence: 0.98
+  original_data: 7654321-6
+  protection_status: Sin protección
+  row: 3
+  sensitivity_level: Sensibilidad crítica
+- column: telefono
+  confidence: 0.95
+  original_data: '22123456'
+  protection_status: Parcialmente protegido
+  row: 3
+  sensitivity_level: Sensibilidad media
+- column: ip
+  confidence: 0.92
+  original_data: 172.16.0.1
+  protection_status: Sin protección
+  row: 3
+  sensitivity_level: Sensibilidad media
+- column: email
+  confidence: 0.1
+  original_data: user@example.org
+  protection_status: Estado desconocido
+  row: 4
+  sensitivity_level: No sensible
+- column: password_hash
+  confidence: 1.0
+  original_data: aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d
+  protection_status: Protegido
+  row: 4
+  sensitivity_level: Sensibilidad media
+- column: rut
+  confidence: 0.98
+  original_data: 8765432-K
+  protection_status: Sin protección
+  row: 4
+  sensitivity_level: Sensibilidad crítica
+- column: telefono
+  confidence: 0.85
+  original_data: '+56212345678'
+  protection_status: Sin protección
+  row: 4
+  sensitivity_level: Sensibilidad media
+- column: ip
+  confidence: 0.1
+  original_data: localhost
+  protection_status: Estado desconocido
+  row: 4
+  sensitivity_level: No sensible
+summary:
+  hash_types_detected:
+    CRC32: 1
+    MD5: 1
+    SHA-1: 1
+    bcrypt: 1
+  protected: 3
+  protection_rate: 0.15
+  recommendations:
+  - Se encontraron 12 elementos sin protección
+  timestamp: null
+  total_analyzed: 20
+  unprotected: 12

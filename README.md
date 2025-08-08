@@ -93,10 +93,11 @@ Entre los algoritmos de hashing mas comunes y en los que nos centraremos en esta
 - Bcrypt
 
 ## 2.2 Herramientas
+El ecosistema criptográfico moderno presenta un panorama amplio de herramientas especializadas que abordan diferentes aspectos de la seguridad en el desarrollo de software. Desde herramientas de análisis estático que detectan vulnerabilidades en tiempo de desarrollo, hasta bibliotecas de implementación que proporcionan primitivas criptográficas robustas, cada categoría cumple un rol vital en la construcción de sistemas seguros. La selección adecuada de estas herramientas no solo determina la efectividad de las medidas de seguridad implementadas, sino que también influye en aspectos críticos como el rendimiento, la mantenibilidad y el cumplimiento de estándares regulatorios. En este apartado se examina el estado actual de las herramientas más relevantes, analizando sus capacidades, limitaciones y casos de uso óptimos para proporcionar una guía práctica para arquitectos de software y desarrolladores que buscan implementar soluciones criptográficas efectivas.
 
 ### 2.2.1 Panorama general de herramientas
 
-El panorama de herramientas criptográficas disponibles es amplio y variado, abarcando desde herramientas de análisis estático hasta plataformas de validación especializada. La investigación académica ha demostrado la importancia de contar con herramientas robustas para el análisis y validación de implementaciones criptográficas.
+El panorama de herramientas criptográficas abarca desde herramientas de análisis estático hasta plataformas de validación especializada. Nuestra investigación ha demostrado la importancia de contar con herramientas robustas para el análisis y validación de implementaciones criptográficas.
 
 **Herramientas de Análisis Estático de Seguridad (SAST)**
 
@@ -126,7 +127,7 @@ Estas herramientas ofrecen ventajas significativas sobre sus predecesoras, inclu
 
 ### 2.2.2 Herramientas de desarrollo
 
-El ecosistema de bibliotecas criptográficas para Python ha evolucionado considerablemente, siendo fundamental para el desarrollo seguro de aplicaciones. La investigación académica ha identificado las principales bibliotecas y sus características distintivas.
+El ecosistema de bibliotecas criptográficas para Python ha evolucionado considerablemente, siendo fundamental para el desarrollo seguro de aplicaciones. Los estudios especializados han catalogado las principales bibliotecas, además de analizar sus características distintivas.
 
 **Bibliotecas Criptográficas Principales**
 
@@ -161,17 +162,18 @@ La biblioteca Passlib se especializa en el manejo seguro de contraseñas, implem
 
 **Consideraciones de Implementación**
 
-La investigación académica enfatiza que el estado de las bibliotecas criptográficas en Python requiere consideración cuidadosa de factores como:
-- Mantenimiento activo y actualizaciones de seguridad
-- Cumplimiento de estándares criptográficos
-- Soporte para diferentes versiones de Python (2.x, 3.x, PyPy)
-- Disponibilidad de documentación y casos de uso
+La evaluación del ecosistema de bibliotecas criptográficas en Python requiere un análisis sistemático de criterios técnicos fundamentales que determinan su idoneidad para implementaciones seguras:
+- Continuidad del mantenimiento y aplicación oportuna de parches de seguridad
+- Conformidad con estándares criptográficos establecidos por organismos como NIST y FIPS
+- Compatibilidad transversal con implementaciones de Python (CPython 2.x/3.x, PyPy, Jython)
+- Calidad y exhaustividad de la documentación técnica y casos de uso documentados
 
 ## 2.3 Ciberseguridad
+Aunque no es la unica herramienta para protegernos de las amenazas ciberneticas, la criptografia es una de las herramientas mas importantes para proteger la informacion de amenazas de terceros, pero su uso incorrecto puede generar vulnerabilidades de seguridad, por eso este apartado se analizan los errores comunes en la implementacion de la criptografia y las prácticas de desarrollo seguro recomendadas para evitarlos.
 
 ### 2.3.1 Errores comunes
 
-La investigación académica ha identificado patrones sistemáticos de errores en implementaciones criptográficas, con impactos significativos en la seguridad de sistemas de software. Estudios empíricos revelan que entre el 83% y 96% de las aplicaciones que utilizan APIs criptográficas presentan al menos un mal uso que puede generar vulnerabilidades de seguridad.
+Múltiples estudios académicos han identificado patrones sistemáticos de errores en implementaciones criptográficas; estos hallazgos revelan impactos significativos en la seguridad de sistemas de software. Estudios empíricos revelan que entre el 83% y 96% de las aplicaciones que utilizan APIs criptográficas presentan al menos un mal uso que puede generar vulnerabilidades de seguridad.
 
 **Clasificación de Errores Criptográficos**
 
@@ -197,7 +199,7 @@ Composición insegura de objetos criptográficos:
 
 **4. Errores de Tipo Prohibido (Never Type Error)**
 Manejo inadecuado de información sensible:
-- Almacenamiento de claves secretas como `java.lang.String`
+- Almacenamiento de claves secretas como `string`
 - Uso de tipos inmutables para datos sensibles
 - Exposición prolongada de secretos en memoria
 
@@ -389,6 +391,7 @@ Según Sadeghi-Nasab y Rafe, múltiples algoritmos han sido académicamente comp
 **Sal Criptográfica**: Valor aleatorio añadido a datos antes del hashing para prevenir ataques de tabla arcoíris
 
 # 3  Investigación
+En este apartado se realiza una investigación sobre los requerimientos funcionales y no funcionales de la librería Cryptic, así como los casos de uso y el análisis de viabilidad del proyecto, con el fin de establecer una base sólida para el desarrollo del mismo.
 
 ## 3.1 Requerimientos
 
@@ -593,7 +596,7 @@ Los casos de uso describen las interacciones específicas entre usuarios y la li
 
 ### 3.3.1 Necesidades
 
-El análisis de viabilidad evalúa la factibilidad técnica, económica y estratégica del proyecto Cryptic, considerando el contexto actual del mercado de herramientas de seguridad criptográfica y las tendencias de la industria.
+Para determinar la capacidad del proyecto para satisfacer necesidades reales del mercado, su sostenibilidad económica y su alineación con los objetivos estratégicos de desarrollo de herramientas de seguridad de próxima generación, con este fin es necesario realizar un análisis de cada aspecto de manera independiente.
 
 **Análisis de Mercado**
 
@@ -790,6 +793,9 @@ Esta aproximación sistemática a performance ha resultado en métricas actuales
 
 # 4  Implementación
 
+
+Como resultado de la investigación antes descrita, se plantea Cryptic como solucion integral para diagnóstico, análisis y aporte a la comunidad de TI, 
+
 ## 4.1 Diseño
 
 La arquitectura de Cryptic sigue principios de ingeniería de software orientada a la modularidad, extensibilidad y mantenibilidad. El diseño ha evolucionado desde una implementación monolítica inicial hacia una arquitectura basada en módulos especializados.
@@ -827,40 +833,59 @@ cryptic/
 
 **Clases Principales**
 
+4.4.1.1 Arquitectura Modular
 **1. HashIdentifier**
 ```python
 class HashIdentifier:
-    """Identificador especializado para algoritmos hash criptográficos."""
+    """Identificador de algoritmos de hash usando técnicas heurísticas"""
     
-    def identify(self, hash_string: str) -> HashAnalysis:
-        """Identifica el tipo de hash con confianza estadística."""
+    def __init__(self):
+        """Inicializa el identificador cargando los patrones de hash"""
         
-    def get_supported_types(self) -> List[HashType]:
-        """Retorna tipos de hash soportados."""
+    def identify(self, hash_string: str) -> HashAnalysis:
+        """Identifica el tipo de hash y proporciona análisis detallado."""
+        
+    def identify_best_match(self, hash_string: str) -> Tuple[HashType, float]:
+        """Retorna la mejor coincidencia con su confianza."""
+        
+    def print_analysis(self, hash_string: str, detailed: bool = False):
+        """Imprime un análisis detallado del hash."""
 ```
 
 **2. CrypticAnalyzer**  
 ```python
 class CrypticAnalyzer:
-    """Analizador principal para evaluación integral de datos."""
+    """Analizador principal de Cryptic para detección integral de datos sensibles."""
     
-    def analyze_data(self, data: str, context: Optional[str] = None) -> DataAnalysis:
-        """Análisis completo incluyendo sensibilidad y protección."""
+    def __init__(self):
+        """Inicializa el analizador con sus componentes"""
+        
+    def analyze_data(self, data: str) -> DataAnalysis:
+        """Analiza una cadena de datos para determinar sensibilidad y protección."""
+        
+    def analyze_batch(self, data_list: List[str]) -> List[DataAnalysis]:
+        """Analiza múltiples cadenas de datos."""
+        
+    def generate_report(self, analysis_results: List[DataAnalysis]) -> Dict[str, Any]:
+        """Genera un reporte resumen de los análisis."""
         
     def print_analysis(self, analysis: DataAnalysis, detailed: bool = False):
-        """Formatea resultados para presentación."""
+        """Imprime el resultado de un análisis de forma legible."""
 ```
 
 **3. SensitiveDataDetector**
 ```python
 class SensitiveDataDetector:
-    """Detector de información sensible basado en patrones."""
+    """Detector principal de datos sensibles basado en patrones regex."""
     
-    def detect(self, text: str) -> SensitiveAnalysis:
-        """Identifica datos sensibles y categoriza riesgos."""
+    def __init__(self):
+        """Inicializa el detector con los patrones configurados"""
         
-    def get_supported_types(self) -> List[SensitiveDataType]:
-        """Tipos de datos sensibles detectables."""
+    def detect(self, text: str) -> SensitiveAnalysis:
+        """Detecta datos sensibles en un texto."""
+        
+    def get_statistics(self) -> Dict[str, Any]:
+        """Retorna estadísticas sobre los patrones configurados."""
 ```
 
 **Tipos de Datos Estructurados**
@@ -869,39 +894,93 @@ class SensitiveDataDetector:
 ```python
 @dataclass
 class HashAnalysis:
-    input_data: str
     possible_types: List[Tuple[HashType, float]]  # (tipo, confianza)
-    is_likely_hash: bool
-    analysis_time_ms: float
+    raw_hash: str                    # Hash original sin procesar
+    cleaned_hash: str               # Hash limpio sin espacios/prefijos
+    length: int                     # Longitud del hash limpio
+    charset_analysis: Dict[str, bool]  # Análisis de conjuntos de caracteres
+    format_analysis: Dict[str, any]    # Análisis de formato
 ```
 
-**Análisis de Datos**
+**Análisis de Datos Sensibles**
+```python
+@dataclass
+class SensitiveAnalysis:
+    original_text: str              # Texto original analizado
+    matches: List[SensitiveMatch]   # Lista de coincidencias encontradas
+    highest_sensitivity: str        # Mayor nivel de sensibilidad detectado
+    total_matches: int             # Número total de coincidencias
+    analysis_time_ms: float        # Tiempo de procesamiento en ms
+    recommendations: List[str]     # Recomendaciones de seguridad específicas
+```
+
+**Análisis Completo de Datos**
 ```python
 @dataclass  
 class DataAnalysis:
-    input_data: str
-    hash_analysis: HashAnalysis
-    sensitive_analysis: SensitiveAnalysis  
-    protection_status: ProtectionStatus
-    recommendations: List[str]
-    analysis_time_ms: float
+    original_data: str              # Datos originales analizados
+    sensitivity_level: DataSensitivity  # Nivel de sensibilidad detectado
+    protection_status: ProtectionStatus # Estado de protección
+    hash_analysis: HashAnalysis | None   # Análisis de hash si aplica
+    sensitive_analysis: SensitiveAnalysis | None  # Análisis de datos sensibles
+    recommendations: List[str]      # Recomendaciones de seguridad
+    confidence: float              # Nivel de confianza en el análisis
+    analysis_time_ms: float        # Tiempo de procesamiento en ms
 ```
 
-**Patrón de Compatibilidad**
+**Coincidencia de Dato Sensible**
+```python
+@dataclass
+class SensitiveMatch:
+    data_type: SensitiveDataType   # Tipo de dato sensible detectado
+    matched_text: str              # Texto que coincidió con el patrón  
+    start_pos: int                 # Posición inicial en el texto
+    end_pos: int                   # Posición final en el texto
+    confidence: float              # Nivel de confianza (0.0-1.0)
+    is_validated: bool             # Si pasó validación adicional
+    pattern_used: SensitivePattern # Patrón que generó la coincidencia
+```
 
-La API mantiene compatibilidad retroactiva mientras introduce funcionalidad avanzada:
+**Enums**
+```python
+class DataSensitivity(Enum):
+    NONE = "No sensible"
+    LOW = "Sensibilidad baja" 
+    MEDIUM = "Sensibilidad media"
+    HIGH = "Sensibilidad alta"
+    CRITICAL = "Sensibilidad crítica"
+
+class ProtectionStatus(Enum):
+    PROTECTED = "Protegido"
+    UNPROTECTED = "Sin protección"
+    PARTIALLY_PROTECTED = "Parcialmente protegido"
+    UNKNOWN = "Estado desconocido"
+```
+
+**Uso de API**
 
 ```python
-# API Legacy (mantenida)
-from cryptic import quick_identify, batch_identify
-result = quick_identify("5d41402abc4b2a76b9719d911017c592")
-# -> "MD5 (80.0%)"
+# Importación de clases principales
 
-# API Moderna (recomendada)  
-from cryptic import HashIdentifier, CrypticAnalyzer
+
+from cryptic import HashIdentifier, CrypticAnalyzer, SensitiveDataDetector
+
+# Análisis de hash individual
 identifier = HashIdentifier()
-analysis = identifier.identify("5d41402abc4b2a76b9719d911017c592")
-print(f"{analysis.possible_types[0][0].value} ({analysis.possible_types[0][1]:.1%})")
+hash_analysis = identifier.identify("5d41402abc4b2a76b9719d911017c592")
+print(f"{hash_analysis.possible_types[0][0].value} ({hash_analysis.possible_types[0][1]:.1%})")
+
+# Análisis completo de datos
+analyzer = CrypticAnalyzer()
+analysis = analyzer.analyze_data("juan.perez@empresa.cl")
+analyzer.print_analysis(analysis, detailed=True)
+
+# Análisis en lotes
+batch_results = analyzer.analyze_batch(["hash1", "email@domain.com", "12.345.678-5"])
+report = analyzer.generate_report(batch_results)
+print(f"Tasa de protección: {report['protection_rate']:.1%}")
+
+
 ```
 
 **Extensibilidad y Plugins**
@@ -911,6 +990,208 @@ La arquitectura permite extensiones futuras mediante:
 - **Strategy Pattern**: Para diferentes algoritmos de análisis
 - **Observer Pattern**: Para notificaciones y logging
 - **Plugin Architecture**: Preparada para módulos externos
+
+### 4.1.2 CLI - Interfaz de Línea de Comandos
+
+Cryptic incluye una interfaz de línea de comandos robusta construida con Click que permite procesar archivos, analizar datos individuales y generar reportes desde terminal.
+
+**Instalación y Configuración**
+
+```bash
+# Instalación con soporte CLI
+pip install cryptic[cli]
+
+# Verificar instalación
+cryptic --version
+```
+
+**Comandos Principales**
+
+**1. `analyze` - Análisis Individual**
+
+Analiza una entrada individual de datos con opciones de formato de salida.
+
+```bash
+# Análisis básico
+cryptic analyze "juan.perez@empresa.cl"
+
+# Análisis detallado  
+cryptic analyze "12.345.678-5" --detailed
+
+# Salida en JSON
+cryptic analyze "4111-1111-1111-1111" --format json
+
+# Salida en YAML
+cryptic analyze "password123" --format yaml
+```
+
+**Opciones:**
+- `--detailed, -d`: Mostrar análisis detallado con matches específicos
+- `--format, -f`: Formato de salida (`text`, `json`, `yaml`)
+
+**2. `verify` - Verificación de Archivos**
+
+Verifica archivos completos en busca de datos sensibles, soportando CSV y texto plano.
+
+```bash
+# Verificar archivo CSV completo
+cryptic verify datos.csv
+
+# Verificar columna específica
+cryptic verify usuarios.csv --column=email
+
+# Generar reporte detallado
+cryptic verify passwords.txt --detailed --output=reporte.json --format json
+
+# Procesar archivo grande
+cryptic verify database_dump.csv --column=customer_data --output=analisis.yaml
+```
+
+**Opciones:**
+- `--column, -c`: Columna específica para archivos CSV
+- `--detailed, -d`: Mostrar análisis detallado por elemento
+- `--output, -o`: Archivo de salida para reporte  
+- `--format, -f`: Formato del reporte (`text`, `json`, `yaml`)
+
+**3. `batch` - Procesamiento en Lotes**
+
+Procesa archivos grandes de forma optimizada con reporte completo y progreso en tiempo real.
+
+```bash
+# Procesamiento básico con reporte JSON
+cryptic batch datos.csv --output=reporte.json
+
+# Reporte en YAML
+cryptic batch usuarios.csv --output=analisis.yaml --format yaml
+
+# Procesar columna específica con reporte CSV
+cryptic batch passwords.csv --column=password --output=resultados.csv --format csv
+
+# Análisis masivo de datos
+cryptic batch big_database.csv --output=security_audit.json
+```
+
+**Opciones:**
+- `--output, -o`: Archivo de salida (requerido)
+- `--format, -f`: Formato del reporte (`json`, `yaml`, `csv`)
+- `--column, -c`: Columna específica para archivos CSV
+
+**Formatos de Salida**
+
+**Formato Text (Terminal)**
+```bash
+🔐 Cryptic Analysis for: juan.perez@empresa.cl
+============================================================
+🔒 juan.perez@empresa.cl
+   Estado: Sin protección
+   Sensibilidad: Sensibilidad media  
+   Confianza: 85.0%
+   📧 Datos sensibles encontrados:
+     ✓ Email: juan.perez@empresa.cl
+
+💡 Recomendaciones:
+   1. 📧 1 email(s) detectado(s): Use hash SHA-256 con salt para pseudonimización
+   2. Considere cifrado simétrico si necesita recuperar el email original
+
+⏱️ Tiempo de análisis: 2.3ms
+```
+
+**Formato JSON**
+```json
+{
+  "original_data": "juan.perez@empresa.cl",
+  "sensitivity_level": "Sensibilidad media",
+  "protection_status": "Sin protección", 
+  "confidence": 0.85,
+  "analysis_time_ms": 2.3,
+  "recommendations": [
+    "📧 1 email(s) detectado(s): Use hash SHA-256 con salt para pseudonimización",
+    "Considere cifrado simétrico si necesita recuperar el email original"
+  ],
+  "sensitive_matches": [
+    {
+      "type": "Email",
+      "text": "juan.perez@empresa.cl",
+      "confidence": 0.9,
+      "validated": true
+    }
+  ]
+}
+```
+
+**Formato YAML**
+```yaml
+original_data: juan.perez@empresa.cl
+sensitivity_level: Sensibilidad media
+protection_status: Sin protección
+confidence: 0.85
+recommendations:
+  - "📧 1 email(s) detectado(s): Use hash SHA-256 con salt para pseudonimización"
+  - "Considere cifrado simétrico si necesita recuperar el email original"
+```
+
+**Reportes de Lotes**
+
+Para procesamiento en lotes, se generan reportes con estadísticas agregadas:
+
+```json
+{
+  "summary": {
+    "total_analyzed": 1500,
+    "protected": 890,
+    "unprotected": 610,
+    "protection_rate": 0.593,
+    "hash_types_detected": {
+      "MD5": 234,
+      "SHA-256": 456,
+      "BCrypt": 200
+    }
+  },
+  "metadata": {
+    "total_rows_processed": 300,
+    "total_elements_analyzed": 1500,
+    "timestamp": null
+  },
+  "results": [
+    {
+      "row": 1,
+      "column": "email",
+      "original_data": "user@example.com",
+      "sensitivity_level": "Sensibilidad media",
+      "protection_status": "Sin protección",
+      "confidence": 0.9,
+      "sensitive_matches": [...]
+    }
+  ]
+}
+```
+
+**Casos de Uso Comunes**
+
+```bash
+# 1. Auditoría de seguridad de base de datos
+cryptic batch user_database.csv --output=security_audit.json
+
+# 2. Verificación de archivos de configuración
+cryptic verify config.env --detailed
+
+# 3. Análisis de logs de aplicación  
+cryptic verify app.log --output=log_analysis.yaml --format yaml
+
+# 4. Validación de datos de testing
+cryptic verify test_data.csv --column=sensitive_field --detailed
+
+# 5. Análisis rápido de cadena individual
+cryptic analyze "potential_sensitive_data" --format json
+```
+
+**Performance y Optimización**
+
+- **Velocidad**: >200,000 análisis/minuto en modo batch
+- **Memoria**: <50MB para archivos de hasta 100,000 filas
+- **Progreso**: Indicadores en tiempo real para archivos grandes  
+- **Interruptible**: Ctrl+C para cancelar operaciones largas
+- **Encoding**: Soporte UTF-8 automático para caracteres especiales
 
 ## 4.2 Modularidad
 
@@ -1082,14 +1363,20 @@ for data in test_data:
 **Demostración 3: Integración CLI**
 
 ```bash
-# Análisis de archivo individual
-$ cryptic analyze --file passwords.txt --format json
+# Análisis de entrada individual
+$ cryptic analyze "juan.perez@empresa.cl" --detailed --format json
 
-# Procesamiento por lotes
-$ cryptic batch --input data/ --output results/ --detailed
+# Verificación de archivo CSV
+$ cryptic verify passwords.csv --column=password --output=reporte.json --format json
 
-# Análisis rápido de hash
-$ echo "5d41402abc4b2a76b9719d911017c592" | cryptic identify
+# Procesamiento por lotes optimizado
+$ cryptic batch database.csv --output=security_audit.json --format json
+
+# Análisis rápido de hash individual
+$ cryptic analyze "5d41402abc4b2a76b9719d911017c592" --format text
+
+# Verificación de archivo de texto plano
+$ cryptic verify app.log --detailed --output=analisis.yaml --format yaml
 ```
 
 **Métricas de Performance**
@@ -1617,7 +1904,7 @@ Backlog:
 | **Configurabilidad** | Permite definir qué datos deben considerarse sensibles según el contexto del usuario (por ejemplo, incluir RUT o DNI). |
 | **Integración con testing** | Puede ser invocada en pruebas automáticas para validar cumplimiento de cifrado. |
 | **Advertencias visuales en consola** | Mensajes claros que alertan de campos vulnerables, con sugerencias. |
-| **CLI y uso como librería** | Se puede usar desde terminal (`cryptic verify archivo.csv`) o desde código (`from cryptic import verify_string`). |
+| **CLI y uso como librería** | Se puede usar desde terminal (`cryptic verify archivo.csv`) o desde código (`from cryptic import CrypticAnalyzer`). |
 
 ## 3. **Mejoras necesarias (iterativas o para el futuro)**
 

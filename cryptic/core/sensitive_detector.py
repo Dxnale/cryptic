@@ -132,7 +132,13 @@ class SensitiveDataDetector:
             Lista de SensitiveMatch encontradas
         """
         matches = []
-        compiled_regex = re.compile(pattern.regex, re.IGNORECASE)
+        # Para la mayoría de los patrones usamos búsqueda case-insensitive,
+        # excepto para nombres de personas, donde la capitalización importa
+        # para reducir falsos positivos.
+        if pattern.data_type.name == "NOMBRE_PERSONA":
+            compiled_regex = re.compile(pattern.regex)
+        else:
+            compiled_regex = re.compile(pattern.regex, re.IGNORECASE)
         
         for match in compiled_regex.finditer(text):
             matched_text = match.group()
@@ -147,8 +153,8 @@ class SensitiveDataDetector:
             
             if pattern.validation_func:
                 is_validated = pattern.validation_func(matched_text)
-                if not is_validated:
-                    confidence *= 0.7  # Reducir confianza si no pasa validación
+                # Conservamos la confianza base aun si no valida; el flag
+                # is_validated permitirá a los consumidores tomar decisiones.
             
             matches.append(SensitiveMatch(
                 data_type=pattern.data_type,
@@ -198,18 +204,28 @@ class SensitiveDataDetector:
         # Ordenar por posición y luego por confianza (descendente)
         sorted_matches = sorted(matches, key=lambda x: (x.start_pos, -x.confidence))
         
-        filtered = []
-        last_end = -1
+        filtered: List[SensitiveMatch] = []
         
         for match in sorted_matches:
-            # Si no se solapa con el anterior, lo agregamos
-            if match.start_pos >= last_end:
+            if not filtered:
                 filtered.append(match)
-                last_end = match.end_pos
-            # Si se solapa pero tiene mayor confianza, reemplazamos el último
-            elif match.confidence > filtered[-1].confidence:
+                continue
+
+            last = filtered[-1]
+            overlaps = match.start_pos < last.end_pos
+
+            if not overlaps:
+                filtered.append(match)
+                continue
+
+            # Si se solapan y son de distinto tipo, conservamos ambas coincidencias
+            if match.data_type != last.data_type:
+                filtered.append(match)
+                continue
+
+            # Si se solapan y son del mismo tipo, conservar la de mayor confianza
+            if match.confidence > last.confidence:
                 filtered[-1] = match
-                last_end = match.end_pos
         
         return filtered
     

@@ -6,6 +6,7 @@ identificar información sensible y verificar su estado de protección.
 """
 
 from typing import List, Dict, Any
+import re
 from dataclasses import dataclass
 from enum import Enum
 
@@ -81,8 +82,8 @@ class CrypticAnalyzer:
         import time
         start_time = time.time()
         
-        # Realizar análisis de hash y datos sensibles en paralelo
-        hash_analysis = self.hash_identifier.identify(data)
+        # Realizar análisis de hash (incluyendo búsqueda dentro de textos mixtos)
+        hash_analysis = self._identify_hash_within_text(data)
         sensitive_analysis = self.sensitive_detector.detect(data)
         
         # Determinar nivel de sensibilidad combinando ambos análisis
@@ -111,6 +112,38 @@ class CrypticAnalyzer:
             confidence=confidence,
             analysis_time_ms=analysis_time
         )
+
+    def _identify_hash_within_text(self, data: str) -> HashAnalysis:
+        """
+        Intenta identificar hashes tanto si el dato completo es un hash
+        como si el hash aparece embebido dentro de un texto más largo.
+
+        Estrategia:
+        1) Intentar identificar el string completo como hash.
+        2) Si no hay coincidencias, escanear posibles tokens dentro del texto
+           y elegir el de mayor confianza.
+        """
+        # 1) Intento directo sobre el dato completo
+        best_analysis = self.hash_identifier.identify(data)
+        if best_analysis.possible_types:
+            return best_analysis
+
+        # 2) Escaneo de posibles tokens dentro del texto
+        # Captura secuencias típicas de hashes (hex largas) y formatos con prefijos ($, *)
+        candidate_tokens = re.findall(r"[\$\*]?[A-Za-z0-9./=]{16,}", data)
+
+        best_top_confidence = -1.0
+        best_local_analysis: HashAnalysis | None = None
+
+        for token in candidate_tokens:
+            local_analysis = self.hash_identifier.identify(token)
+            if local_analysis.possible_types:
+                top_conf = local_analysis.possible_types[0][1]
+                if top_conf > best_top_confidence:
+                    best_top_confidence = top_conf
+                    best_local_analysis = local_analysis
+
+        return best_local_analysis if best_local_analysis is not None else best_analysis
     
     def analyze_batch(self, data_list: List[str]) -> List[DataAnalysis]:
         """
@@ -344,6 +377,10 @@ class CrypticAnalyzer:
         
         if confidences:
             return sum(confidences) / len(confidences)
-        
-        # Sin detecciones, confianza baja
-        return 0.1
+
+        # Sin detecciones: devolver una confianza mínima si el texto parece
+        # no sensible, pero 0.0 si contiene palabras críticas como 'password'.
+        lowered = hash_analysis.raw_hash.lower()
+        if any(flag in lowered for flag in ["password", "passwd", "contraseña"]):
+            return 0.0
+        return 0.15
