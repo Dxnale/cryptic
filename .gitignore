@@ -11,3 +11,6 @@ wheels/
 
 .ruff_cache
 .pytest_cache
+.vscode
+
+demo.py
