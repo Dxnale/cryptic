@@ -6,9 +6,9 @@ automáticamente diferentes tipos de información sensible como emails,
 RUT chilenos, números de tarjetas de crédito, teléfonos, etc.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Callable
 import re
 
 
@@ -57,8 +57,8 @@ class SensitivePattern:
     sensitivity_level: str
     confidence: float
     description: str
-    validation_func: Optional[callable] = None
-    examples: List[str] = None
+    validation_func: Optional[Callable] = None
+    examples: List[str] = field(default_factory=list)
     false_positive_patterns: Optional[List[str]] = None
 
 

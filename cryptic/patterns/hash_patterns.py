@@ -8,7 +8,7 @@ características como longitud, formato, prefijos y conjuntos de caracteres.
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import List
+from typing import List, Optional
 
 
 class HashType(Enum):
@@ -69,7 +69,7 @@ class HashPattern:
     """
 
     hash_type: HashType
-    length: int
+    length: Optional[int]
     charset: str
     regex: str
     prefix: str | None = None

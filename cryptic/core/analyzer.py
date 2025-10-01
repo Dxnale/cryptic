@@ -64,7 +64,7 @@ class CrypticAnalyzer:
     para proporcionar un análisis completo de seguridad de datos.
     """
     
-    def __init__(self):
+    def __init__(self) -> None:
         """Inicializa el analizador con sus componentes"""
         self.hash_identifier = HashIdentifier()
         self.sensitive_detector = SensitiveDataDetector()
@@ -172,7 +172,7 @@ class CrypticAnalyzer:
         unprotected_count = sum(1 for a in analysis_results if a.protection_status == ProtectionStatus.UNPROTECTED)
         
         # Estadísticas por tipo de hash
-        hash_types = {}
+        hash_types: Dict[str, int] = {}
         for analysis in analysis_results:
             if analysis.hash_analysis and analysis.hash_analysis.possible_types:
                 hash_type = analysis.hash_analysis.possible_types[0][0].value
@@ -195,7 +195,7 @@ class CrypticAnalyzer:
             "timestamp": None,  # TODO: Agregar timestamp en futuras versiones
         }
     
-    def print_analysis(self, analysis: DataAnalysis, detailed: bool = False):
+    def print_analysis(self, analysis: DataAnalysis, detailed: bool = False) -> None:
         """
         Imprime el resultado de un análisis de forma legible.
         

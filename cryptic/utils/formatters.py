@@ -8,7 +8,7 @@ operaciones de limpieza de datos.
 
 import re
 import base64
-from typing import Dict
+from typing import Dict, Any, cast, List
 
 
 def clean_hash(hash_string: str) -> str:
@@ -67,7 +67,7 @@ def analyze_charset(hash_string: str) -> Dict[str, bool]:
     return analysis
 
 
-def analyze_format(hash_string: str) -> Dict[str, any]:
+def analyze_format(hash_string: str) -> Dict[str, Any]:
     """
     Analiza el formato y estructura del hash.
     
@@ -87,12 +87,12 @@ def analyze_format(hash_string: str) -> Dict[str, any]:
     }
 
     # Analizar estructura de sal para hashes con formato $algo$cost$salt$hash
-    if "$" in hash_string and len(analysis["segments"]) >= 3:
+    if "$" in hash_string and len(cast(List[str], analysis["segments"])) >= 3:
         analysis["salt_structure"] = {
-            "algorithm": analysis["segments"][1] if len(analysis["segments"]) > 1 else None,
-            "cost_factor": analysis["segments"][2] if len(analysis["segments"]) > 2 else None,
-            "salt": analysis["segments"][3] if len(analysis["segments"]) > 3 else None,
-            "hash": analysis["segments"][4] if len(analysis["segments"]) > 4 else None,
+            "algorithm": cast(List[str], analysis["segments"])[1] if len(cast(List[str], analysis["segments"])) > 1 else None,
+            "cost_factor": cast(List[str], analysis["segments"])[2] if len(cast(List[str], analysis["segments"])) > 2 else None,
+            "salt": cast(List[str], analysis["segments"])[3] if len(cast(List[str], analysis["segments"])) > 3 else None,
+            "hash": cast(List[str], analysis["segments"])[4] if len(cast(List[str], analysis["segments"])) > 4 else None,
         }
 
     return analysis

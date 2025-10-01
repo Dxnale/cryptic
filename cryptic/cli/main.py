@@ -13,8 +13,7 @@ import csv
 import json
 import yaml
 from pathlib import Path
-from typing import List, Dict, Any, Optional
-
+from typing import List, Dict, Any, Optional, cast
 import click
 
 from cryptic import CrypticAnalyzer, DataAnalysis
@@ -35,7 +34,7 @@ class Colors:
     END = '\033[0m'
 
 
-def print_colored(text: str, color: str = Colors.WHITE, bold: bool = False):
+def print_colored(text: str, color: str = Colors.WHITE, bold: bool = False) -> None:
     """Imprime texto con color en terminal"""
     style = f"{Colors.BOLD if bold else ''}{color}"
     click.echo(f"{style}{text}{Colors.END}")
@@ -98,7 +97,7 @@ def format_analysis_for_terminal(analysis: DataAnalysis, detailed: bool = False)
 @click.group(invoke_without_command=True)
 @click.option('--version', is_flag=True, help='Mostrar versión')
 @click.pass_context
-def cli(ctx, version):
+def cli(ctx: click.Context, version: bool) -> None:
     """
     🔐 Cryptic - Herramienta de detección y análisis de datos sensibles
     
@@ -119,7 +118,7 @@ def cli(ctx, version):
 @click.option('--detailed', '-d', is_flag=True, help='Mostrar análisis detallado')
 @click.option('--format', '-f', type=click.Choice(['text', 'json', 'yaml']), 
               default='text', help='Formato de salida')
-def analyze(data: str, detailed: bool, format: str):
+def analyze(data: str, detailed: bool, format: str) -> None:
     """
     Analizar una entrada individual de datos.
     
@@ -138,7 +137,7 @@ def analyze(data: str, detailed: bool, format: str):
         
         if format == 'json':
             # Convertir análisis a diccionario serializable
-            result = {
+            result: Dict[str, Any] = {
                 'original_data': analysis.original_data,
                 'sensitivity_level': analysis.sensitivity_level.value,
                 'protection_status': analysis.protection_status.value,
@@ -149,7 +148,7 @@ def analyze(data: str, detailed: bool, format: str):
             
             # Agregar detalles de datos sensibles si existen
             if analysis.sensitive_analysis and analysis.sensitive_analysis.matches:
-                result['sensitive_matches'] = [
+                result['sensitive_matches'] = cast(List[Dict[str, Any]], [
                     {
                         'type': match.data_type.value,
                         'text': match.matched_text,
@@ -157,7 +156,7 @@ def analyze(data: str, detailed: bool, format: str):
                         'validated': match.is_validated
                     }
                     for match in analysis.sensitive_analysis.matches
-                ]
+                ])
             
             click.echo(json.dumps(result, indent=2, ensure_ascii=False))
             
@@ -195,7 +194,7 @@ def analyze(data: str, detailed: bool, format: str):
 @click.option('--format', '-f', type=click.Choice(['text', 'json', 'yaml']), 
               default='text', help='Formato de salida')
 def verify(file_path: Path, column: Optional[str], detailed: bool, 
-           output: Optional[Path], format: str):
+           output: Optional[Path], format: str) -> None:
     """
     Verificar un archivo en busca de datos sensibles.
     
@@ -263,7 +262,7 @@ def verify(file_path: Path, column: Optional[str], detailed: bool,
         click.echo(f"   Elementos sin protección: {report['unprotected']}")
         
         # Mostrar datos sensibles encontrados
-        sensitive_count = sum(1 for r in results if r.sensitive_analysis.matches)
+        sensitive_count = sum(1 for r in results if r.sensitive_analysis and r.sensitive_analysis.matches)
         if sensitive_count > 0:
             print_colored(f"   ⚠️  Datos sensibles detectados: {sensitive_count}", Colors.RED, bold=True)
         
@@ -293,7 +292,7 @@ def verify(file_path: Path, column: Optional[str], detailed: bool,
 @click.option('--format', '-f', type=click.Choice(['json', 'yaml', 'csv']), 
               default='json', help='Formato del reporte')
 @click.option('--column', '-c', type=str, help='Columna específica a analizar (para CSV)')
-def batch(file_path: Path, output: Path, format: str, column: Optional[str]):
+def batch(file_path: Path, output: Path, format: str, column: Optional[str]) -> None:
     """
     Procesar un archivo en lote y generar reporte completo.
     
@@ -359,7 +358,7 @@ def batch(file_path: Path, output: Path, format: str, column: Optional[str]):
                         print_colored(f"   Progreso: {processed}/{total_rows} ({progress:.1f}%)", Colors.GREEN)
         
         # Generar reporte completo
-        analyses = [r['analysis'] for r in results]
+        analyses = [r['analysis'] for r in results if isinstance(r['analysis'], DataAnalysis)]
         report = analyzer.generate_report(analyses)
         
         print_colored("\n📊 Procesamiento completado:", Colors.GREEN, bold=True)
@@ -367,12 +366,14 @@ def batch(file_path: Path, output: Path, format: str, column: Optional[str]):
         click.echo(f"   Tasa de protección: {report['protection_rate']:.1%}")
         
         # Contar datos sensibles por tipo
-        sensitive_by_type = {}
+        sensitive_by_type: Dict[str, int] = {}
         for result in results:
-            if result['analysis'].sensitive_analysis.matches:
-                for match in result['analysis'].sensitive_analysis.matches:
-                    data_type = match.data_type.value
-                    sensitive_by_type[data_type] = sensitive_by_type.get(data_type, 0) + 1
+            if isinstance(result['analysis'], DataAnalysis):
+                current_analysis: DataAnalysis = result['analysis']
+                if current_analysis.sensitive_analysis and current_analysis.sensitive_analysis.matches:
+                    for match in current_analysis.sensitive_analysis.matches:
+                        data_type = match.data_type.value
+                        sensitive_by_type[data_type] = sensitive_by_type.get(data_type, 0) + 1
         
         if sensitive_by_type:
             print_colored("   ⚠️  Datos sensibles por tipo:", Colors.YELLOW, bold=True)
@@ -389,7 +390,7 @@ def batch(file_path: Path, output: Path, format: str, column: Optional[str]):
 
 
 def save_report(results: List[DataAnalysis], report: Dict[str, Any], 
-                output_path: Path, format: str):
+                output_path: Path, format: str) -> None:
     """Guarda un reporte de análisis en el formato especificado"""
     
     if format == 'json':
@@ -440,7 +441,7 @@ def save_report(results: List[DataAnalysis], report: Dict[str, Any],
 
 
 def save_batch_report(results: List[Dict], report: Dict[str, Any], 
-                      output_path: Path, format: str):
+                      output_path: Path, format: str) -> None:
     """Guarda un reporte de procesamiento por lotes"""
     
     if format == 'json':
@@ -466,7 +467,7 @@ def save_batch_report(results: List[Dict], report: Dict[str, Any],
                             'confidence': match.confidence,
                             'validated': match.is_validated
                         }
-                        for match in (r['analysis'].sensitive_analysis.matches if r['analysis'].sensitive_analysis else [])
+                        for match in (r['analysis'].sensitive_analysis.matches if r['analysis'].sensitive_analysis and r['analysis'].sensitive_analysis.matches else [])
                     ]
                 }
                 for r in results
@@ -518,7 +519,7 @@ def save_batch_report(results: List[Dict], report: Dict[str, Any],
             yaml.dump(data, f, default_flow_style=False, allow_unicode=True)
 
 
-def main():
+def main() -> None:
     """Función principal del CLI"""
     try:
         cli()

@@ -70,7 +70,7 @@ class SensitiveDataDetector:
     información sensible como emails, RUTs, tarjetas de crédito, etc.
     """
     
-    def __init__(self):
+    def __init__(self) -> None:
         """Inicializa el detector con los patrones configurados"""
         self.patterns = get_sensitive_patterns()
         self.compiled_patterns = get_compiled_patterns()
@@ -270,7 +270,7 @@ class SensitiveDataDetector:
             return ["No se detectaron datos sensibles específicos"]
         
         # Agrupar por tipo de dato
-        by_type = {}
+        by_type: Dict[SensitiveDataType, List[SensitiveMatch]] = {}
         for match in matches:
             data_type = match.data_type
             if data_type not in by_type:

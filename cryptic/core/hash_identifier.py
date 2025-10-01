@@ -7,7 +7,7 @@ de hash basándose en patrones, longitudes, formatos y otras características.
 
 import re
 from dataclasses import dataclass
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Any
 
 from cryptic.patterns.hash_patterns import HashType, HashPattern, get_hash_patterns
 from cryptic.utils.formatters import clean_hash, analyze_charset, analyze_format
@@ -29,7 +29,7 @@ class HashAnalysis:
         Longitud del hash limpio en caracteres
     charset_analysis: Dict[str, bool]
         Análisis de conjuntos de caracteres (hex, base64, etc.)
-    format_analysis: Dict[str, any]
+    format_analysis: Dict[str, Any]
         Análisis de formato (tiene prefijo, estructura, etc.)
     """
 
@@ -38,13 +38,13 @@ class HashAnalysis:
     cleaned_hash: str
     length: int
     charset_analysis: Dict[str, bool]
-    format_analysis: Dict[str, any]
+    format_analysis: Dict[str, Any]
 
 
 class HashIdentifier:
     """Identificador de algoritmos de hash usando técnicas heurísticas"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Inicializa el identificador cargando los patrones de hash"""
         self.patterns = get_hash_patterns()
 
@@ -159,7 +159,7 @@ class HashIdentifier:
             return analysis.possible_types[0]
         return (HashType.UNKNOWN, 0.0)
 
-    def print_analysis(self, hash_string: str, detailed: bool = False):
+    def print_analysis(self, hash_string: str, detailed: bool = False) -> None:
         """
         Imprime un análisis detallado del hash.
         
