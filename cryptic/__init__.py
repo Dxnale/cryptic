@@ -13,7 +13,7 @@ Ejemplo de uso básico:
     >>> analysis = identifier.identify("5d41402abc4b2a76b9719d911017c592")
     >>> print(f"{analysis.possible_types[0][0].value} ({analysis.possible_types[0][1]:.1%})")
     'MD5 (80.0%)'
-    
+
     >>> analyzer = CrypticAnalyzer()
     >>> result = analyzer.analyze_data("some_sensitive_data")
     >>> analyzer.print_analysis(result)
@@ -22,9 +22,9 @@ Para más información, consulta la documentación completa.
 """
 
 # Importar API pública
-from cryptic.core.hash_identifier import HashIdentifier, HashType, HashAnalysis
-from cryptic.core.analyzer import CrypticAnalyzer, DataSensitivity, ProtectionStatus, DataAnalysis
-from cryptic.core.sensitive_detector import SensitiveDataDetector, SensitiveDataType, SensitiveAnalysis
+from cryptic.core.analyzer import CrypticAnalyzer, DataAnalysis, DataSensitivity, ProtectionStatus
+from cryptic.core.hash_identifier import HashAnalysis, HashIdentifier, HashType
+from cryptic.core.sensitive_detector import SensitiveAnalysis, SensitiveDataDetector, SensitiveDataType
 
 # Metadatos del paquete
 __version__ = "0.1.0"
@@ -34,15 +34,13 @@ __description__ = "Biblioteca para detección y verificación de encriptación d
 __all__ = [
     # Hash identification
     "HashIdentifier",
-    "HashType", 
+    "HashType",
     "HashAnalysis",
-    
     # Main analyzer
     "CrypticAnalyzer",
     "DataSensitivity",
-    "ProtectionStatus", 
+    "ProtectionStatus",
     "DataAnalysis",
-    
     # Sensitive data detection
     "SensitiveDataDetector",
     "SensitiveDataType",

@@ -1,0 +1,74 @@
+name: ❓ Pregunta / Soporte
+description: Hacer una pregunta o solicitar ayuda sobre Cryptic
+title: "[Question]: "
+labels: ["question", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ¿Tienes dudas sobre cómo usar Cryptic? ¿Necesitas ayuda con la instalación o configuración? ¡Estamos aquí para ayudar!
+
+  - type: dropdown
+    id: tipo_pregunta
+    attributes:
+      label: Tipo de pregunta
+      description: ¿Qué tipo de ayuda necesitas?
+      options:
+        - Instalación y configuración
+        - Uso de la API
+        - Uso de la CLI
+        - Desarrollo y contribución
+        - Reporte de bug (usar template específico)
+        - Solicitud de característica (usar template específico)
+        - Otro
+    validations:
+      required: true
+
+  - type: textarea
+    id: pregunta
+    attributes:
+      label: Tu pregunta
+      description: Describe claramente qué necesitas saber o qué problema estás teniendo.
+      placeholder: |
+        Estoy intentando [acción] pero me encuentro con [problema].
+        ¿Cómo puedo [objetivo específico]?
+        No entiendo cómo funciona [funcionalidad específica].
+    validations:
+      required: true
+
+  - type: textarea
+    id: contexto
+    attributes:
+      label: Contexto adicional
+      description: Proporciona detalles que puedan ayudar a responder tu pregunta.
+      placeholder: |
+        - ¿Qué versión de Cryptic estás usando?
+        - ¿Qué versión de Python tienes?
+        - ¿En qué sistema operativo?
+        - ¿Qué has intentado hasta ahora?
+
+  - type: textarea
+    id: codigo_ejemplo
+    attributes:
+      label: Código de ejemplo (opcional)
+      description: Si aplica, incluye código relevante que muestre tu problema o intento de solución.
+      placeholder: |
+        ```python
+        from cryptic import CrypticAnalyzer
+
+        # Mi código aquí
+        analyzer = CrypticAnalyzer()
+        # ¿Qué va aquí?
+        ```
+
+  - type: textarea
+    id: error_logs
+    attributes:
+      label: Mensajes de error (opcional)
+      description: Si hay errores, inclúyelos completos aquí.
+      placeholder: |
+        Error:
+        Traceback (most recent call last):
+          File "...", line ..., in ...
+            ...
+      render: text

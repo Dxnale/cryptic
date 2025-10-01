@@ -7,10 +7,10 @@ de hash basándose en patrones, longitudes, formatos y otras características.
 
 import re
 from dataclasses import dataclass
-from typing import List, Dict, Tuple, Any
+from typing import Any, Dict, List, Tuple
 
-from cryptic.patterns.hash_patterns import HashType, HashPattern, get_hash_patterns
-from cryptic.utils.formatters import clean_hash, analyze_charset, analyze_format
+from cryptic.patterns.hash_patterns import HashPattern, HashType, get_hash_patterns
+from cryptic.utils.formatters import analyze_charset, analyze_format, clean_hash
 
 
 @dataclass
@@ -51,11 +51,11 @@ class HashIdentifier:
     def _calculate_confidence(self, pattern: HashPattern, hash_analysis: HashAnalysis) -> float:
         """
         Calcula el nivel de confianza para un patrón dado.
-        
+
         Args:
             pattern: Patrón de hash a evaluar
             hash_analysis: Análisis del hash objetivo
-            
+
         Returns:
             Nivel de confianza (0.0-1.0)
         """
@@ -102,10 +102,10 @@ class HashIdentifier:
     def identify(self, hash_string: str) -> HashAnalysis:
         """
         Identifica el tipo de hash y proporciona análisis detallado.
-        
+
         Args:
             hash_string: Hash a identificar
-            
+
         Returns:
             HashAnalysis con tipos posibles y análisis detallado
         """
@@ -147,10 +147,10 @@ class HashIdentifier:
     def identify_best_match(self, hash_string: str) -> Tuple[HashType, float]:
         """
         Retorna la mejor coincidencia con su confianza.
-        
+
         Args:
             hash_string: Hash a identificar
-            
+
         Returns:
             Tupla con (HashType, confianza)
         """
@@ -162,7 +162,7 @@ class HashIdentifier:
     def print_analysis(self, hash_string: str, detailed: bool = False) -> None:
         """
         Imprime un análisis detallado del hash.
-        
+
         Args:
             hash_string: Hash a analizar
             detailed: Si incluir análisis detallado de formato y charset

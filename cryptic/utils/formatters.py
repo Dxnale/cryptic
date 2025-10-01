@@ -6,18 +6,18 @@ cadenas de texto, detectar conjuntos de caracteres, y realizar
 operaciones de limpieza de datos.
 """
 
-import re
 import base64
-from typing import Dict, Any, cast, List
+import re
+from typing import Any, Dict, List, cast
 
 
 def clean_hash(hash_string: str) -> str:
     """
     Limpia un hash removiendo espacios, tabs y saltos de línea.
-    
+
     Args:
         hash_string: La cadena de hash a limpiar
-        
+
     Returns:
         Hash limpio sin espacios en blanco
     """
@@ -27,10 +27,10 @@ def clean_hash(hash_string: str) -> str:
 def is_base64(s: str) -> bool:
     """
     Verifica si el string es base64 válido.
-    
+
     Args:
         s: Cadena a verificar
-        
+
     Returns:
         True si es base64 válido, False en caso contrario
     """
@@ -46,10 +46,10 @@ def is_base64(s: str) -> bool:
 def analyze_charset(hash_string: str) -> Dict[str, bool]:
     """
     Analiza el conjunto de caracteres usado en el hash.
-    
+
     Args:
         hash_string: Cadena a analizar
-        
+
     Returns:
         Diccionario con análisis de conjuntos de caracteres
     """
@@ -70,10 +70,10 @@ def analyze_charset(hash_string: str) -> Dict[str, bool]:
 def analyze_format(hash_string: str) -> Dict[str, Any]:
     """
     Analiza el formato y estructura del hash.
-    
+
     Args:
         hash_string: Cadena a analizar
-        
+
     Returns:
         Diccionario con análisis de formato
     """
@@ -90,7 +90,9 @@ def analyze_format(hash_string: str) -> Dict[str, Any]:
     if "$" in hash_string and len(cast(List[str], analysis["segments"])) >= 3:
         analysis["salt_structure"] = {
             "algorithm": cast(List[str], analysis["segments"])[1] if len(cast(List[str], analysis["segments"])) > 1 else None,
-            "cost_factor": cast(List[str], analysis["segments"])[2] if len(cast(List[str], analysis["segments"])) > 2 else None,
+            "cost_factor": cast(List[str], analysis["segments"])[2]
+            if len(cast(List[str], analysis["segments"])) > 2
+            else None,
             "salt": cast(List[str], analysis["segments"])[3] if len(cast(List[str], analysis["segments"])) > 3 else None,
             "hash": cast(List[str], analysis["segments"])[4] if len(cast(List[str], analysis["segments"])) > 4 else None,
         }

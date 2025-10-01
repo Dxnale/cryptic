@@ -1,0 +1,101 @@
+name: 🐛 Reporte de Bug
+description: Crear un reporte de bug para ayudar a mejorar Cryptic
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por reportar un bug. Por favor completa toda la información posible para ayudar a reproducir y solucionar el problema.
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción del problema
+      description: Una descripción clara y concisa del bug encontrado.
+      placeholder: Describe qué sucede y qué esperabas que ocurriera.
+    validations:
+      required: true
+
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Pasos para reproducir
+      description: Lista los pasos exactos para reproducir el problema.
+      placeholder: |
+        1. Ejecuté el comando '...'
+        2. Seleccioné la opción '...'
+        3. Apareció el error '...'
+    validations:
+      required: true
+
+  - type: textarea
+    id: comportamiento_esperado
+    attributes:
+      label: Comportamiento esperado
+      description: Describe qué debería ocurrir normalmente.
+      placeholder: El programa debería mostrar el resultado correcto sin errores.
+
+  - type: textarea
+    id: comportamiento_actual
+    attributes:
+      label: Comportamiento actual
+      description: Describe exactamente qué ocurre (incluye mensajes de error si los hay).
+      placeholder: Aparece el mensaje de error "..." y el programa se cierra.
+
+  - type: textarea
+    id: datos_prueba
+    attributes:
+      label: Datos de prueba
+      description: Proporciona datos de ejemplo que reproduzcan el problema (sin información sensible real).
+      placeholder: |
+        Input: "ejemplo@dominio.com"
+        Output esperado: "Email detectado correctamente"
+        Output actual: "Error inesperado"
+
+  - type: dropdown
+    id: version
+    attributes:
+      label: Versión de Cryptic
+      description: ¿Qué versión de Cryptic estás usando?
+      options:
+        - 0.1.0 (última)
+        - 0.0.x (desarrollo)
+        - Otra (especificar abajo)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: python_version
+    attributes:
+      label: Versión de Python
+      description: ¿Qué versión de Python estás usando?
+      options:
+        - Python 3.12
+        - Python 3.11
+        - Python 3.10
+        - Python 3.9
+        - Python 3.8
+        - Otra
+    validations:
+      required: true
+
+  - type: dropdown
+    id: sistema_operativo
+    attributes:
+      label: Sistema operativo
+      description: ¿En qué sistema operativo ocurre el problema?
+      options:
+        - Linux
+        - macOS
+        - Windows
+        - Otro
+    validations:
+      required: true
+
+  - type: textarea
+    id: contexto_adicional
+    attributes:
+      label: Información adicional
+      description: Cualquier información adicional que pueda ayudar a solucionar el problema.
+      placeholder: Logs, configuración específica, entorno de desarrollo, etc.

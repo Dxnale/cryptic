@@ -6,7 +6,7 @@ Este script demuestra las funcionalidades principales de Cryptic
 para identificación de hashes y análisis de datos sensibles.
 """
 
-from cryptic import HashIdentifier, CrypticAnalyzer
+from cryptic import CrypticAnalyzer, HashIdentifier
 
 
 def demo_hash_identification() -> None:
@@ -55,8 +55,8 @@ def demo_cryptic_analyzer() -> None:
     # Datos de ejemplo
     test_data = [
         "5d41402abc4b2a76b9719d911017c592",  # Hash MD5
-        "$2b$10$N9qo8uLOickgx2ZMRZoMye",      # Hash bcrypt
-        "plain_password",                     # Texto plano
+        "$2b$10$N9qo8uLOickgx2ZMRZoMye",  # Hash bcrypt
+        "plain_password",  # Texto plano
         "*A4B6157319038724E3560894F7F932C8886EBFCF",  # MySQL5
     ]
 

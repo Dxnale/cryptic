@@ -1,0 +1,88 @@
+name: 💡 Solicitud de Característica
+description: Sugerir una nueva característica o mejora para Cryptic
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ¡Gracias por sugerir una mejora! Por favor describe claramente la nueva característica que te gustaría ver implementada.
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción de la característica
+      description: Describe claramente qué nueva funcionalidad o mejora propones.
+      placeholder: |
+        Me gustaría que Cryptic pudiera detectar [tipo de dato] porque [razón/justificación].
+        Actualmente, cuando intento [escenario de uso], no puedo [problema].
+    validations:
+      required: true
+
+  - type: textarea
+    id: casos_uso
+    attributes:
+      label: Casos de uso
+      description: Describe escenarios específicos donde esta característica sería útil.
+      placeholder: |
+        1. Como desarrollador, quiero detectar [tipo de dato] para [objetivo]
+        2. Como analista de seguridad, necesito [funcionalidad] para [proceso]
+    validations:
+      required: true
+
+  - type: textarea
+    id: propuesta_solucion
+    attributes:
+      label: Propuesta de solución
+      description: Describe cómo crees que debería implementarse esta característica (opcional pero útil).
+      placeholder: |
+        Podría implementarse agregando:
+        - Un nuevo patrón de detección en [módulo]
+        - Una nueva opción de configuración [--opcion]
+        - Una extensión de la API existente
+
+  - type: textarea
+    id: alternativas_consideradas
+    attributes:
+      label: Alternativas consideradas
+      description: ¿Has considerado otras formas de resolver este problema?
+      placeholder: |
+        He intentado [solución alternativa] pero no funciona porque [limitación].
+        También consideré [otra aproximación] pero sería menos eficiente.
+
+  - type: textarea
+    id: ejemplos
+    attributes:
+      label: Ejemplos de uso
+      description: Proporciona ejemplos concretos de cómo se usaría esta característica.
+      placeholder: |
+        ```python
+        # Ejemplo de API
+        analyzer = CrypticAnalyzer()
+        result = analyzer.analyze_data("dato_especial")
+        print(result.feature_propuesta)
+        ```
+
+        ```bash
+        # Ejemplo de CLI
+        cryptic analyze "dato_especial" --nueva-opcion
+        ```
+
+  - type: dropdown
+    id: prioridad
+    attributes:
+      label: Prioridad
+      description: ¿Qué tan importante es esta característica para ti?
+      options:
+        - Baja (nice to have)
+        - Media (mejoraría significativamente el proyecto)
+        - Alta (necesaria para casos de uso importantes)
+        - Crítica (bloquea funcionalidad esencial)
+    validations:
+      required: true
+
+  - type: textarea
+    id: contexto_adicional
+    attributes:
+      label: Información adicional
+      description: Cualquier contexto adicional, referencias o comentarios que puedan ayudar.
