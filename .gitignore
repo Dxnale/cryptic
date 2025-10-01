@@ -12,6 +12,9 @@ wheels/
 # UV cache
 .uv
 
+# Warp
+WARP.md
+
 # Ruff cache
 .ruff_cache
 

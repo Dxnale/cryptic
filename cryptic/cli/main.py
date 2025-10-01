@@ -124,10 +124,12 @@ def analyze(data: str, detailed: bool, format: str) -> None:
     Analizar una entrada individual de datos.
 
     Ejemplos:
-    \b
-    cryptic analyze "juan.perez@empresa.cl"
-    cryptic analyze "12.345.678-5" --detailed
-    cryptic analyze "4111-1111-1111-1111" --format json
+
+        $ cryptic analyze "juan.perez@empresa.cl"
+
+        $ cryptic analyze "12.345.678-5" --detailed
+
+        $ cryptic analyze "4111-1111-1111-1111" --format json
     """
     print_colored(f"\n🔍 Analizando: {data}", Colors.CYAN, bold=True)
     print_colored("=" * 60, Colors.CYAN)
@@ -202,10 +204,12 @@ def verify(file_path: Path, column: Optional[str], detailed: bool, output: Optio
     Soporta archivos de texto plano y CSV.
 
     Ejemplos:
-    \b
-    cryptic verify datos.csv --column=email
-    cryptic verify usuarios.csv --output=reporte.json --format json
-    cryptic verify passwords.txt --detailed
+
+        $ cryptic verify datos.csv --column=email
+
+        $ cryptic verify usuarios.csv --output=reporte.json --format json
+
+        $ cryptic verify passwords.txt --detailed
     """
     print_colored(f"\n🔍 Verificando archivo: {file_path.name}", Colors.CYAN, bold=True)
     print_colored("=" * 60, Colors.CYAN)
@@ -300,10 +304,12 @@ def batch(file_path: Path, output: Path, format: str, column: Optional[str]) -> 
     Optimizado para archivos grandes con reporte detallado.
 
     Ejemplos:
-    \b
-    cryptic batch datos.csv --output=reporte.json
-    cryptic batch usuarios.csv --output=analisis.yaml --format yaml
-    cryptic batch passwords.csv --column=password --output=resultados.csv --format csv
+
+        $ cryptic batch datos.csv --output=reporte.json
+
+        $ cryptic batch usuarios.csv --output=analisis.yaml --format yaml
+
+        $ cryptic batch passwords.csv --column=password --output=resultados.csv --format csv
     """
     print_colored(f"\n🚀 Procesando en lote: {file_path.name}", Colors.CYAN, bold=True)
     print_colored("=" * 60, Colors.CYAN)
