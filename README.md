@@ -2,10 +2,7 @@
 [![PyPI version](https://badge.fury.io/py/cryptic.svg)](https://badge.fury.io/py/cryptic)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Tests](https://github.com/Dxnale/cryptic/actions/workflows/tests.yml/badge.svg)](https://github.com/Dxnale/cryptic/actions/workflows/tests.yml)
-
-- **Compatibilidad con Python 3.10+**: Funciona con la versión moderna y estable de Python
-
+[![Tests](https://github.com/Dxnale/cryptic/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/Dxnale/cryptic/actions/workflows/tests.yml)
 ## ✨ Características
 
 - **🔍 Detección de datos sensibles**: Identifica emails, RUTs chilenos, números de tarjetas de crédito, teléfonos, IPs y más
