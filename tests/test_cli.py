@@ -183,7 +183,7 @@ class TestCLIFileHandling:
                 "texto normal 7",
                 "texto normal 8",
                 "texto normal 9",
-                "texto normal 10"
+                "texto normal 10",
             ]
 
             for data in test_data:
