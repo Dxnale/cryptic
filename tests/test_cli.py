@@ -112,16 +112,33 @@ class TestCLIFileHandling:
         """Setup para cada test"""
         self.runner = CliRunner()
 
-    def test_verify_csv_file(self):
-        """Test verificación de archivo CSV"""
+    def test_verify_csv_file_email_column(self):
+        """Test verificación de archivo CSV con columna email"""
         with tempfile.NamedTemporaryFile(mode="w", suffix=".csv", delete=False) as f:
             f.write("email,password\n")
-            f.write("juan@test.com,hash123\n")
+            f.write("juan@mail.com,hash123\n")
             f.write("maria@empresa.cl,5d41402abc4b2a76b9719d911017c592\n")
             csv_path = f.name
 
         try:
             result = self.runner.invoke(cli, ["verify", csv_path, "--column", "email"])
+            assert result.exit_code == 0
+            assert "Verificando archivo:" in result.output
+            assert "Total de elementos analizados:" in result.output
+            assert "Datos sensibles detectados:" in result.output
+        finally:
+            Path(csv_path).unlink(missing_ok=True)
+
+    def test_verify_csv_file_no_column(self):
+        """Test verificación de archivo CSV sin columna"""
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".csv", delete=False) as f:
+            f.write("email,password\n")
+            f.write("juan@mail.com,hash123\n")
+            f.write("maria@empresa.cl,5d41402abc4b2a76b9719d911017c592\n")
+            csv_path = f.name
+
+        try:
+            result = self.runner.invoke(cli, ["verify", csv_path])
             assert result.exit_code == 0
             assert "Verificando archivo:" in result.output
             assert "Total de elementos analizados:" in result.output
@@ -145,6 +162,69 @@ class TestCLIFileHandling:
             assert "12.345.678-5" in result.output
         finally:
             Path(txt_path).unlink(missing_ok=True)
+
+    def test_verify_detailed_many_results_message(self):
+        """Test verify command with --detailed flag shows message for more than 10 results"""
+        # Create a text file with more than 10 lines of data
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
+            # Create 15 lines of test data
+            test_data = [
+                "juan@empresa.cl",
+                "12.345.678-5",
+                "5d41402abc4b2a76b9719d911017c592",
+                "+56912345678",
+                "192.168.1.1",
+                "texto normal 1",
+                "texto normal 2",
+                "texto normal 3",
+                "texto normal 4",
+                "texto normal 5",
+                "texto normal 6",
+                "texto normal 7",
+                "texto normal 8",
+                "texto normal 9",
+                "texto normal 10"
+            ]
+
+            for data in test_data:
+                f.write(f"{data}\n")
+
+            txt_path = f.name
+
+        try:
+            # Run verify command with --detailed flag
+            result = self.runner.invoke(cli, ["verify", txt_path, "--detailed"])
+            assert result.exit_code == 0
+
+            # Verify that the message about additional results appears
+            expected_message = "... y 5 más (use --output para ver todos)"
+            assert expected_message in result.output
+
+            # Also verify that the detailed analysis section appears
+            assert "📋 Análisis detallado:" in result.output
+
+        finally:
+            Path(txt_path).unlink(missing_ok=True)
+
+    def test_verify_text_file_output(self):
+        """Test verificación de archivo de texto con salida"""
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
+            f.write("juan@empresa.cl\n")
+            f.write("12.345.678-5\n")
+            f.write("plaintext\n")
+            txt_path = f.name
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as out_f:
+            json_path = out_f.name
+
+        try:
+            result = self.runner.invoke(cli, ["verify", txt_path, "--output", json_path])
+            assert result.exit_code == 0
+            assert "Verificando archivo:" in result.output
+            assert "Reporte guardado en:" in result.output
+        finally:
+            Path(txt_path).unlink(missing_ok=True)
+            Path(json_path).unlink(missing_ok=True)
 
     def test_batch_command_csv_to_json(self):
         """Test comando batch con salida JSON"""
@@ -178,7 +258,7 @@ class TestCLIFileHandling:
         """Test comando batch con salida CSV"""
         with tempfile.NamedTemporaryFile(mode="w", suffix=".csv", delete=False) as f:
             f.write("email,password\n")
-            f.write("admin@test.com,hash123\n")
+            f.write("admin@mail.com,hash123\n")
             f.write("user@empresa.cl,plaintext\n")
             csv_input_path = f.name
 
